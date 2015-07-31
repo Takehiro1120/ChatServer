@@ -76,7 +76,9 @@ public class ChatClientHandler extends Thread{
     
     //whoamiコマンドによって現在設定されている名前を返す
     public void whoami() throws IOException{
-        
+        String returnMessage = getClientName(); //クライアントの名前を取得し表示する
+        send(returnMessage);
+        System.out.println(": "+returnMessage); //サーバーに表示すべきものを表示する
     }
     
     //usersコマンドによって現在チャットに参加しているメンバの名前をクライアントに返す
