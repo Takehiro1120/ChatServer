@@ -58,7 +58,20 @@ public class ChatClientHandler extends Thread{
     
     //tellコマンドによって指定された相手にのみメッセージを投稿する
     public void tell(String opponent, String message) throws IOException{
-        
+        //相手の名前と一致するクライアントを探す
+        for(int i=0; i<clients.size(); i++){ //クライアント数繰り返す
+            ChatClientHandler handler = (ChatClientHandler)clients.get(i);
+            if(handler.getClientName().equals(opponent)==true) { //相手の名前と一致した時
+                handler.send("["+this.getClientName()+"->"+opponent+"] "+message);//メッセージを送る
+                String returnMessage = opponent;//送った相手の名前を表示する
+                send(returnMessage);
+                System.out.println(": "+returnMessage); //サーバーに表示すべきものを表示する
+                return; //役目を終えたので終了
+            }
+        }
+        String returnMessage=opponent+": unknown user"; //送信相手が見つからなかった時、その旨を表示
+        send(returnMessage);
+        System.out.println(": "+returnMessage); //サーバーに表示すべきものを表示する
     }
     
     //byeコマンドによってチャットから退出する
