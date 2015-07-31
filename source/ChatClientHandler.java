@@ -97,7 +97,19 @@ public class ChatClientHandler extends Thread{
     
     //usersコマンドによって現在チャットに参加しているメンバの名前をクライアントに返す
     public void users() throws IOException{
-        
+        //クライアントを確認し名前を記憶する
+        List names = new ArrayList(); //名前を記憶する配列
+        for(int i=0; i<clients.size(); i++){ //クライアント数繰り返す
+            ChatClientHandler handler = (ChatClientHandler)clients.get(i);
+            names.add(handler.getClientName()); //対象のユーザーを記憶
+        }
+        Collections.sort(names); //記憶した名前を並び替える
+        String returnMessage = ""; 
+        for(int i=0; i<names.size(); i++){
+            if(i>0) returnMessage=returnMessage+","; //最初のループ出ない時、","をメッセージに追加する
+            returnMessage=returnMessage+names.get(i); //クライアントの名前をメッセージに追加する
+        }
+        this.send(returnMessage); //クライアントの一覧を表示する
     }
     
     //helpコマンドによって処理可能な命令の一覧を表示する
