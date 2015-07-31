@@ -127,7 +127,7 @@ public class ChatClientHandler extends Thread{
     
     //helpコマンドによって処理可能な命令の一覧を表示する
     public void help() throws IOException{
-        String returnMessage = "bye, help";
+        String returnMessage = "bye, help, name, post, users, tell, whoami";
         send(returnMessage);
         System.out.println(": "+returnMessage); //サーバーに表示すべきものを表示する
     }
