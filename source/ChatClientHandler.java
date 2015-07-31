@@ -91,10 +91,35 @@ public class ChatClientHandler extends Thread{
         System.out.println(": "+returnMessage); //サーバーに表示すべきものを表示する
     }
     
-    //postコマンドによってメッセージを投稿する
-    public void post(String message) throws IOException{
-        
-    }
+    	//postコマンドによってメッセージを投稿する
+	public void post(String message) throws IOException{
+		//メッセージを自分以外のクライアントに送る
+		List names = new ArrayList(); //名前を記憶する配列
+		for(int i=0; i<clients.size(); i++){ //クライアント数繰り返す
+			ChatClientHandler handler = (ChatClientHandler)clients.get(i);
+			if(handler != this){ //postを行ったクライアント以外の時
+				names.add(handler.getClientName()); //対象のユーザーを記憶
+				//postを行なったクライアントの名前とメッセージを送る
+				handler.send("["+this.getClientName()+"] "+message); 
+			}
+		}
+		//postを行ったクライアントに、メッセージを受け取る相手を送る
+		Collections.sort(names); //記憶した名前を並び替える
+		String returnMessage = ""; 
+		if(names.size() <=0) {
+			returnMessage="no one receive message";
+			send(returnMessage);
+			System.out.println(": "+returnMessage); //サーバーに表示すべきものを表示する
+		} else{
+			returnMessage="sent to ";
+			for(int i=0; i<names.size(); i++){
+				if(i>0) returnMessage=returnMessage+","; //最初のループ出ない時、","をメッセージに追加する
+				returnMessage=returnMessage+names.get(i); //メッセージを受け取る相手の名前をメッセージに追加する
+				send(returnMessage);
+				System.out.println(": "+returnMessage); //サーバーに表示すべきものを表示する
+			}
+		}
+	}
     
     
     //クライアントとのデータのやり取りを行うストリームを開くメソッド
