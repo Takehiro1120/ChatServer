@@ -68,12 +68,26 @@ public class ChatClientHandler extends Thread{
       System.out.println(": "+returnMessage); //サーバーに表示すべきものを表示する
       clients.remove(this); //リストから自身を削除する
     }
-    
-    //nameコマンドによってコマンド実行者のクライアントの名前を変更する
-    public void name(String newName) throws IOException{
-        
-    }
-    
+	
+	//nameコマンドによってコマンド実行者のクライアントの名前を変更する
+	public void name(String newName) throws IOException{
+		//すべてのクライアントの名前を参照する
+		for(int i=0; i<clients.size(); i++){
+			ChatClientHandler handler = (ChatClientHandler)clients.get(i);
+			//参照しているクライアントの名前とコマンド対象の名前が同じの時
+			if(handler.getClientName().equals(newName)==true) {
+				String returnMessage = "["+newName+"] is already used by other clients"; //エラーメッセージ
+				send(returnMessage);
+				System.out.println(": "+returnMessage); //サーバーに表示すべきものを表示する
+				return; //コマンド処理を終了する
+			}
+		}
+		this.name=newName; //コマンドを実行したクライアントの名前を更新
+		String returnMessage="change name to "+name; //新しい名前を表示
+		send(returnMessage);
+		System.out.println(": "+returnMessage); //サーバーに表示すべきものを表示する
+	}
+	
     //whoamiコマンドによって現在設定されている名前を返す
     public void whoami() throws IOException{
         String returnMessage = getClientName(); //クライアントの名前を取得し表示する
