@@ -1,12 +1,1 @@
-import java.net.*;
-import java.io.*;
-import java.util.*;
-
-public class ChatServer{
-	private ServerSocket server;
-	private List clients = new ArrayList();
-	public void listen(){
-	}
-	public static void main(String[] args){
-	}
-}
+import java.net.*;import java.io.*;import java.util.*;public class ChatServer{	private ServerSocket server;	private List clients = new ArrayList();	public void listen(){		try{			server=new ServerSocket(18080); //ポート18080で起動			System.out.println("server start on port 18080");			while(true){ //無限ループ				Socket socket = server.accept(); //接続があるまで待機				ChatClientHandler handler = new ChatClientHandler(socket, clients);				clients.add(handler);				handler.start();			}		} catch(IOException e){			e.printStackTrace();		}	}			public static void main(String[] args){		ChatServer echo = new ChatServer();		echo.listen();	}}
