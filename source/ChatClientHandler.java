@@ -63,7 +63,10 @@ public class ChatClientHandler extends Thread{
     
     //byeコマンドによってチャットから退出する
     public void bye() throws IOException{
-        
+      String returnMessage="bye "+this.name; //退出時のメッセージ
+      send(returnMessage);
+      System.out.println(": "+returnMessage); //サーバーに表示すべきものを表示する
+      clients.remove(this); //リストから自身を削除する
     }
     
     //nameコマンドによってコマンド実行者のクライアントの名前を変更する
